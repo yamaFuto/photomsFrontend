@@ -1,19 +1,18 @@
 import { useState, ChangeEvent } from "react";
 
-type Function = (initialValue: number | string) => [
+type Function = (initialValue: string) => [
   {
-    value: string | number,
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void,
+    value: string,
+    onChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void,
   },
   () => void,
 ]
 
-
 const useInput: Function = initialValue => {
-  const [value, setValue] = useState<string | number>(initialValue);
+  const [value, setValue] = useState<string>(initialValue);
 
   return [
-    { value, onChange: (e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value)},
+    { value, onChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setValue(e.target.value)},
     () => setValue(initialValue)
   ]
 }

@@ -1,12 +1,36 @@
 import Image from 'next/image'
 import {useRouter} from "next/router"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ModalContent from "@/components/modalContent";
-import Header from "@/components/header"
+import Header from "@/components/header";
+import { faker } from '@faker-js/faker';
+import { FixedSizeList } from "react-window";
+import axios from "@/libs/axios";
+
+const URL = "/api/detail";
+const URL_MULTIPLE = "/api/multipleDetail";
+
+type photo = {
+  created_at: string,
+  updated_at: string,
+  id: number,
+  sum: number,
+  url: string,
+  detail_id: number
+}
 
 export default function Home() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [data, setData] = useState<photo[]>([]);
+
+  useEffect(() => {
+    axios.get(URL).then((response) => {
+      console.log(response.data);
+      setData(response.data);
+    })
+  }, [])
+
   return (
     <>
     <Header action={setIsOpen} />
