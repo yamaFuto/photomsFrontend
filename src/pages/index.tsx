@@ -14,6 +14,7 @@ type photo = {
   created_at: string,
   updated_at: string,
   id: number,
+  goods:number,
   sum: number,
   url: string,
   detail_id: number
@@ -24,11 +25,22 @@ export default function Home() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [data, setData] = useState<photo[]>([]);
 
-  useEffect(() => {
-    axios.get(URL).then((response) => {
-      console.log(response.data);
-      setData(response.data);
+  const move = (photo: photo) => {
+    router.push({
+      pathname: "/show/photoDetail",
+      query: { q : photo.detail_id}
     })
+  }
+
+  useEffect(() => {
+    try {
+      axios.get(URL).then((response) => {
+        // console.log(response.data);
+        setData(response.data);
+      })
+    } catch (e) {
+      console.log(e);
+    }
   }, [])
 
   return (
@@ -65,13 +77,12 @@ export default function Home() {
         <option value="others" >the others</option>
       </select>
 
-      <ol className="w-6/12 grid grid-cols-3 max-[600px]:grid-cols-1 max-[1000px]:grid-cols-2 gap-y-4 gap-x-4 mt-12 mx-auto pt-2 border-t-2">
-        <li><Image className="hover:scale-105 duration-100 rounded-md" width="300" height="300" alt="image" src="/images/300x300mono.png" /></li>
-        <li><Image className="hover:scale-105 duration-100 rounded-md" width="300" height="300" alt="image" src="/images/300x300mono.png" /></li>
-        <li><Image className="hover:scale-105 duration-100 rounded-md" width="300" height="300" alt="image" src="/images/300x300mono.png" /></li>
-        <li><Image className="hover:scale-105 duration-100 rounded-md" width="300" height="300" alt="image" src="/images/300x300mono.png" /></li>
-        <li><Image className="hover:scale-105 duration-100 rounded-md" width="300" height="300" alt="image" src="/images/300x300mono.png" /></li>
-        <li><Image className="hover:scale-105 duration-100 rounded-md" width="300" height="300" alt="image" src="/images/300x300mono.png" /></li>
+      <ol className="w-6/12 grid grid-cols-3 max-[600px]:grid-cols-1 max-[1000px]:grid-cols-2 gap-y-4 gap-x-4 mt-12 mb-4 mx-auto pt-2 border-t-2">
+         {data.map((photo: photo) => (
+          <button onClick={move.bind(null, photo)} key={photo.id}>
+            <li ><Image className="hover:scale-105 duration-100 rounded-md" width="300" height="300" alt="image" src={photo.url} /></li>
+          </button>
+         ))}
       </ol>
       <ModalContent isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
