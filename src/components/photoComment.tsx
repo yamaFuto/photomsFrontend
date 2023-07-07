@@ -34,7 +34,7 @@ const PhotoComment : FC<props> = ({ detail_id}) => {
     }
   }
   return (
-    <div className="flex flex-col mx-2 mb-2">
+    <div className="flex flex-col mx-2 mb-2 max-[800px]:w-80 max-[800px]:block max-[1060px]:hidden max-[1300px]:w-56">
       <input {...commentName} className="border-b-2 p-1 w-4/12 focus:outline-0" type="text" placeholder="name" required/>
       <div className="flex">
         <input {...comment} className="border-b-2 p-1 w-full focus:outline-0" type="text" placeholder="comment" required/>

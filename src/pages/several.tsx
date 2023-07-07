@@ -1,19 +1,52 @@
 import Image from 'next/image'
 import {useRouter} from "next/router"
+import { useState, useEffect } from "react";
+import ModalContent from "@/components/modalContent";
+import Header from "@/components/header";
+import { faker } from '@faker-js/faker';
+import { FixedSizeList } from "react-window";
+import axios from "@/libs/axios";
 
-export default function Several() {
+const URL = "/api/detail";
+const URL_MULTIPLE = "/api/multipleDetail";
+
+type photo = {
+  created_at: string,
+  updated_at: string,
+  id: number,
+  goods:number,
+  sum: number,
+  url: string,
+  detail_id: number
+}
+
+export default function Home() {
   const router = useRouter();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [datas, setData] = useState<photo[][]>([]);
+
+  const move = (photo: photo) => {
+    router.push({
+      pathname: "/show/MultiplePhotoDetail",
+      query: { q : photo.detail_id}
+    })
+  }
+
+  useEffect(() => {
+    try {
+      axios.get(URL_MULTIPLE).then((response) => {
+        console.log(response.data);
+        setData(response.data);
+      })
+    } catch (e) {
+      console.log(e);
+    }
+  }, [])
+  console.log(datas); 
+
   return (
     <>
-      <div className=" flex justify-center mt-3 border-b-2 pb-3">
-        <div className="italic text-3xl mr-48 max-[400px]:m-0">Logo</div>
-        {/* <Image alt="logo" src="https://placehold.jp/70x50.png" className="mr-48 max-[400px]:m-0" /> */}
-        <input id="clearbutton2" type="search" placeholder="serach" className="bg-slate-100 rounded-lg px-2 py-0 w-96 relative focus:outline-none max-[800px]:hidden"></input>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-10 h-10 px-1 hover:bg-slate-400 max-[800px]:hidden rounded-lg ml-1 p-1 pt-2 mt-1">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-        </svg>
-        <button className="bg-teal-400 hover:bg-teal-700 duration-200 p-2 py-1 rounded-lg font-semibold text-xl text-zinc-100 ml-40 max-[600px]:ml-20 mt-2">Post</button>
-      </div>
+    <Header action={setIsOpen} />
 
       <div className="container max-[600px]:ml-20 max-[600px]:w-96 ml-40 mt-10 flex pb-0 border-b-2 w-4/12">
         <button onClick = {() => router.push("/")} className="group mr-8 text-2xl pl-2">
@@ -45,14 +78,14 @@ export default function Several() {
         <option value="others" >the others</option>
       </select>
 
-      <ol className="w-6/12 grid grid-cols-3 gap-y-4 gap-x-4 mt-12 mx-auto pt-2 border-t-2">
-        <li><Image className="hover:scale-105 duration-100 rounded-md" width="300" height="300" alt="image" src="/images/300x300mono.png" /></li>
-        <li><Image className="hover:scale-105 duration-100 rounded-md" width="300" height="300" alt="image" src="/images/300x300mono.png" /></li>
-        <li><Image className="hover:scale-105 duration-100 rounded-md" width="300" height="300" alt="image" src="/images/300x300mono.png" /></li>
-        <li><Image className="hover:scale-105 duration-100 rounded-md" width="300" height="300" alt="image" src="/images/300x300mono.png" /></li>
-        <li><Image className="hover:scale-105 duration-100 rounded-md" width="300" height="300" alt="image" src="/images/300x300mono.png" /></li>
-        <li><Image className="hover:scale-105 duration-100 rounded-md" width="300" height="300" alt="image" src="/images/300x300mono.png" /></li>
+      <ol className="w-6/12 grid grid-cols-3 max-[600px]:grid-cols-1 max-[1000px]:grid-cols-2 gap-y-4 gap-x-4 mt-12 mb-4 mx-auto pt-2 border-t-2">
+         {datas.map((photo: photo[]) => (
+          <button onClick={move.bind(null, photo[0])} key={photo[0].id}>
+            <li ><Image className="hover:scale-105 duration-100 rounded-md" width="300" height="300" alt="image" src={photo[0].url} /></li>
+          </button>
+         ))}
       </ol>
+      <ModalContent isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
   )
 }
