@@ -6,13 +6,12 @@ import Header from "@/components/header";
 import { faker } from '@faker-js/faker';
 import { FixedSizeList } from "react-window";
 import axios from "@/libs/axios";
-import useInput from "@/hooks/input";
 import { useDispatch } from "react-redux";
 import store from "@/store/index";
-import { changeGenre, resetGenre } from "../store/modules/genre";
+import { changeGenre, resetGenre } from "../../store/modules/genre";
 import { useSelector } from "react-redux";
 
-const URL = "/api/detail";
+const URL_MULTIPLE = "/api/multipleGenreDetail";
 
 type photo = {
   created_at: string,
@@ -31,58 +30,63 @@ type genre = {
 export default function Home() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [data, setData] = useState<photo[]>([]);
+  const [datas, setData] = useState<photo[][]>([]);
   const [ loading, setLoading ] = useState<boolean>(false);
 
   type AppDispatch = typeof store.dispatch;
   const dispatch = useDispatch<AppDispatch>();
   const genre = useSelector((state: genre) => state.genre);
 
-
-  const move = (photo: photo) => {
-    router.push({
-      pathname: "/show/photoDetail",
-      query: { q : photo.detail_id}
-    })
-  }
-
   const updatedGenre = (e: ChangeEvent<HTMLSelectElement>) => {
     dispatch(changeGenre(e.target.value));
   }
 
+  const move = (photo: photo) => {
+    router.push({
+      pathname: "/show/MultiplePhotoDetail",
+      query: { q : photo.detail_id}
+    })
+  }
+
+  console.log("severalGenre")
+
   useEffect(() => {
-    if (genre)  {
-      router.push("/genre/")
-      console.log(genre);
+    if (!genre) {
+      router.push("/several");
     }
     try {
       setLoading(true);
-      axios.get(URL).then((response) => {
-        // console.log(response.data);
-        setData(response.data);
+      axios.get(URL_MULTIPLE, {
+        params: {
+          genre: genre
+        }
+      }).then((response) => {
         setLoading(false);
+        console.log(response.data);
+        setData(response.data);
       })
     } catch (e) {
       console.log(e);
     }
-  }, [router, genre])
+  }, [genre, router])
+  console.log(datas);
 
   return (
     <>
     <Header action={setIsOpen} />
 
       <div className="container max-[600px]:ml-20 max-[600px]:w-96 ml-40 mt-10 flex pb-0 border-b-2 w-4/12">
-        <button className="group mr-8 text-2xl pl-2">
+        <button onClick = {() => router.push("/")} className="group mr-8 text-2xl pl-2">
           image
-          <div className="bg-teal-800 h-1 rounded-md duration-100"></div>
+          <div className="group-hover:bg-teal-300 h-1 rounded-md duration-100"></div>
         </button>
-        <button onClick = {() => router.push("/wallpaper")} className="group text-2xl">
+        <button onClick={() => router.push("/wallpaper")} className="group text-2xl">
           wallpaper
           <div className="group-hover:bg-teal-300 h-1 rounded-md duration-100"></div>
         </button>
-        <button onClick={() => router.push("/several")} className="group max-[600px]:ml-2 ml-8 text-2xl">
+        <button className="group max-[600px]:ml-2 ml-8 text-2xl">
           several images
-          <div className="group-hover:bg-teal-300 h-1 rounded-md"></div>
+          <div className="bg-teal-800 h-1 rounded-md"></div>
         </button>
       </div>
 
@@ -101,18 +105,24 @@ export default function Home() {
         <option value="others" >the others</option>
       </select>
 
-      {loading ? 
+      {loading ?
       <div className="text-4xl text-center mt-40">
         now Loading
       </div>
-      :
-      <ol className="w-6/12 grid grid-cols-3 max-[600px]:grid-cols-1 max-[1000px]:grid-cols-2 gap-y-4 gap-x-4 mt-12 mb-4 mx-auto pt-2 border-t-2">
-         {data.map((photo: photo) => (
-          <button onClick={move.bind(null, photo)} key={photo.id}>
-            <li ><Image className="hover:scale-105 duration-100 rounded-md" width="300" height="300" alt="image" src={photo.url} /></li>
-          </button>
-         ))}
-      </ol>}
+      : datas.length ?
+        <ol className="w-6/12 grid grid-cols-3 max-[600px]:grid-cols-1 max-[1000px]:grid-cols-2 gap-y-4 gap-x-4 mt-12 mb-4 mx-auto pt-2 border-t-2">
+          {datas.map((photo: photo[]) => (
+            <button onClick={move.bind(null, photo[0])} key={photo[0].id}>
+              <li ><Image className="hover:scale-105 duration-100 rounded-md" width="300" height="300" alt="image" src={photo[0].url} /></li>
+            </button>
+          ))}
+        </ol>
+        :
+        <div className="text-4xl text-center mt-40">
+          there is no photos
+        </div>
+    }
+
       <ModalContent isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
   )
