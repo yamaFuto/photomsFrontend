@@ -24,7 +24,9 @@ type photo = {
 }
 
 type genre = {
-  genre: string
+  genre: string,
+  search: string,
+  word: string
 }
 
 export default function Home() {

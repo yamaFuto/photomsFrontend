@@ -23,8 +23,11 @@ type photo = {
   url: string,
   detail_id: number
 }
+
 type genre = {
-  genre: string
+  genre: string,
+  search: string,
+  word: string
 }
 
 export default function Home() {
