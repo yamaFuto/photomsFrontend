@@ -53,11 +53,19 @@ export default function Home() {
   }
 
   useEffect(() => {
+    console.log(localStorage.getItem('genre'), "aaaa");
+    if (localStorage.getItem('genre')) {
+      dispatch(changeGenre(localStorage.getItem('genre')));
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
     if (!genre)  {
       // router.push("/genre/index")
       router.push("/");
     }
     try {
+      localStorage.setItem('genre', genre);
       setLoading(true);
       axios.get(URL, {
         params: {

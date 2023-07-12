@@ -62,14 +62,14 @@ export default function Home() {
     console.log(localStorage.getItem('search'), "aaaa");
     if (localStorage.getItem('search')) {
       dispatch(changeSearch(localStorage.getItem('search')));
-      dispatch(changeWord(localStorage.getItem('search')));
     }
   }, [dispatch]);
 
   useEffect(() => {
     if (genre)  {
-      router.push("/genre/")
+      router.push("/search/genre");
       console.log(genre);
+      localStorage.setItem('genre', genre);
     }
     if (search) {
       try {

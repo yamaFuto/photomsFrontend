@@ -8,7 +8,7 @@ const word = createSlice({
       state = payload;
       return state;
     },
-    resetWord(state, { type, payload }) {
+    resetWord(state) {
       state = "";
       return state;
     }

@@ -8,7 +8,7 @@ const search = createSlice({
       state = payload;
       return state;
     },
-    resetSearch(state, { type, payload }) {
+    resetSearch(state) {
       state = "";
       return state;
     }

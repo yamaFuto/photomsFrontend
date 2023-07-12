@@ -64,7 +64,8 @@ export default function Home() {
   useEffect(() => {
     if (genre)  {
       router.push("/genre/several")
-      console.log(genre);
+      console.log("genre");
+      localStorage.setItem('genre', genre);
     }
     if (search) {
       try {
@@ -82,8 +83,7 @@ export default function Home() {
         console.log(e);
       }
     }
-  }, [genre, router, search])
-  console.log(datas);
+  }, [genre, router, search]);
 
   return (
     <>

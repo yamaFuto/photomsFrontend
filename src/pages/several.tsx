@@ -55,6 +55,7 @@ export default function Home() {
     if (genre)  {
       router.push("/genre/several")
       console.log(genre);
+      localStorage.setItem('genre', genre);
     }
     try {
       setLoading(true);

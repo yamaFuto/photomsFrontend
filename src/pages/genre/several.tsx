@@ -53,10 +53,18 @@ export default function Home() {
   console.log("severalGenre")
 
   useEffect(() => {
+    console.log(localStorage.getItem('genre'), "aaaa");
+    if (localStorage.getItem('genre')) {
+      dispatch(changeGenre(localStorage.getItem('genre')));
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
     if (!genre) {
       router.push("/several");
     }
     try {
+      localStorage.setItem('genre', genre);
       setLoading(true);
       axios.get(URL_MULTIPLE, {
         params: {

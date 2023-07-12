@@ -6,6 +6,10 @@ import ModalContent from "@/components/modalContent"
 import PhotoComment from "@/components/photoComment"
 import ImageExplanation from "@/components/ImageExplanation";
 import axios from "@/libs/axios";
+import { useDispatch } from "react-redux";
+import { changeSearch, resetSearch } from "../../store/modules/search";
+import { changeWord, resetWord } from "../../store/modules/word";
+import store from "@/store/index";
 
 const URL = "/api/getDetail";
 
@@ -44,14 +48,22 @@ type Props = {
     q:  number
   }
 }
+
 type asyncProps = {
   props: Props
 }
+
 type PhotoDetail = [
   detail[],
   photo[],
   comment[]
 ]
+
+type glob = {
+  genre: string,
+  search: string,
+  word: string
+}
 
 type getProps = (props: Props) => Promise<asyncProps>;
 
@@ -61,7 +73,16 @@ const PhotoDetail: React.FC<Props> = ({ query }) => {
   const [ loading, setLoading] = useState<boolean>(false);
   const [PhotoDetail, setPhotoDetail] = useState<PhotoDetail>([[],[],[]]);
 
-  
+  type AppDispatch = typeof store.dispatch;
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    console.log(localStorage.getItem('search'), "aaaa");
+    if (localStorage.getItem('search')) {
+      dispatch(changeSearch(localStorage.getItem('search')));
+      dispatch(changeWord(localStorage.getItem('search')));
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     try {

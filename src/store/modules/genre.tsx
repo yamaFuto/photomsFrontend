@@ -8,7 +8,7 @@ const genre = createSlice({
       state = payload;
       return state;
     },
-    resetGenre(state, { type, payload }) {
+    resetGenre(state) {
       state = "";
       return state;
     }

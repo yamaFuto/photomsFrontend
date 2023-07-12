@@ -6,6 +6,7 @@ import store from "@/store/index";
 import axios from "@/libs/axios";
 import { changeSearch, resetSearch } from "@/store/modules/search";
 import { changeWord, resetWord } from "@/store/modules/word";
+import { changeGenre, resetGenre } from "@/store/modules/genre";
 
 type props = {
   action: (p: boolean) => void
@@ -33,9 +34,20 @@ const Header : FC<props> = ({action}) => {
   const searchClick = () => {
     if (word) {
       dispatch(changeSearch(word));
+      dispatch(resetGenre());
       router.push("/search");
+    } else {
+      dispatch(changeSearch(""));
+      router.push("/");
     }
-    }
+  }
+
+  const moveToBegin = () => {
+    dispatch(resetGenre());
+    dispatch(resetSearch());
+    dispatch(resetWord());
+    router.push("/");
+  }
 
   useEffect(() => { // このeffectは初回レンダー時のみ呼ばれるeffect
     isFirstRender.current = true
@@ -56,7 +68,7 @@ const Header : FC<props> = ({action}) => {
   return (
     <>
       <div className=" flex justify-center mt-3 border-b-2 pb-3">
-          <Link href="/" className="italic text-3xl mr-48 max-[400px]:m-0">Logo</Link>
+          <button onClick={moveToBegin} className="italic text-3xl mr-48 max-[400px]:m-0">Logo</button>
           {/* <Image alt="logo" src="https://placehold.jp/70x50.png" className="mr-48 max-[400px]:m-0" /> */}
           <input value={word} onChange={updatedSearch} id="clearbutton2" type="search" placeholder="serach" className="bg-slate-100 rounded-lg px-2 py-0 w-96 relative focus:outline-none max-[800px]:hidden"></input>
           <button onClick={searchClick}>
