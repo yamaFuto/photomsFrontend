@@ -36,7 +36,7 @@ export default function Home() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [data, setData] = useState<photo[]>([]);
-  const [ loading, setLoading] = useState<boolean>(false);
+  const [ loading, setLoading] = useState<boolean>(true);
 
   type AppDispatch = typeof store.dispatch;
   const dispatch = useDispatch<AppDispatch>();
@@ -56,7 +56,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    console.log(localStorage.getItem('genre'), "aaaa");
+    // console.log(localStorage.getItem('genre'), "aaaa");
     if (localStorage.getItem('genre')) {
       dispatch(changeGenre(localStorage.getItem('genre')));
     }
@@ -76,7 +76,8 @@ export default function Home() {
       router.push("/search");
     }
     try {
-      setLoading(true);
+      localStorage.setItem('genre', genre);
+      // setLoading(true);
       axios.get(URL, {
         params: {
           genre: genre,
@@ -84,13 +85,13 @@ export default function Home() {
         }
       }).then((response) => {
         setLoading(false);
-        console.log(response.data);
+        // console.log(response.data);
         setData(response.data);
       })
     } catch (e) {
       console.log(e);
     }
-  }, [router, genre, search])
+  }, [router, genre, search, dispatch])
 
   return (
     <>

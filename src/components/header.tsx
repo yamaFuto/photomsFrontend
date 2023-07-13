@@ -63,7 +63,7 @@ const Header : FC<props> = ({action}) => {
 
   // localStorage.setItem("as", "JSON.stringify");
 
-  console.log(word);
+  // console.log(word);
 
   return (
     <>

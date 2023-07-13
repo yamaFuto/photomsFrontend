@@ -34,7 +34,7 @@ export default function Home() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [datas, setData] = useState<photo[][]>([]);
-  const [ loading, setLoading ] = useState<boolean>(false);
+  const [ loading, setLoading ] = useState<boolean>(true);
 
   type AppDispatch = typeof store.dispatch;
   const dispatch = useDispatch<AppDispatch>();
@@ -58,7 +58,7 @@ export default function Home() {
       localStorage.setItem('genre', genre);
     }
     try {
-      setLoading(true);
+      // setLoading(true);
       axios.get(URL_MULTIPLE).then((response) => {
         console.log(response.data);
         setData(response.data);

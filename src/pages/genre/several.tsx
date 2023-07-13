@@ -33,7 +33,7 @@ export default function Home() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [datas, setData] = useState<photo[][]>([]);
-  const [ loading, setLoading ] = useState<boolean>(false);
+  const [ loading, setLoading ] = useState<boolean>(true);
 
   type AppDispatch = typeof store.dispatch;
   const dispatch = useDispatch<AppDispatch>();
@@ -50,10 +50,10 @@ export default function Home() {
     })
   }
 
-  console.log("severalGenre")
+  // console.log("severalGenre")
 
   useEffect(() => {
-    console.log(localStorage.getItem('genre'), "aaaa");
+    // console.log(localStorage.getItem('genre'), "aaaa");
     if (localStorage.getItem('genre')) {
       dispatch(changeGenre(localStorage.getItem('genre')));
     }
@@ -65,21 +65,21 @@ export default function Home() {
     }
     try {
       localStorage.setItem('genre', genre);
-      setLoading(true);
+      // setLoading(true);
       axios.get(URL_MULTIPLE, {
         params: {
           genre: genre
         }
       }).then((response) => {
+        // console.log(response.data);
         setLoading(false);
-        console.log(response.data);
         setData(response.data);
       })
     } catch (e) {
       console.log(e);
     }
   }, [genre, router])
-  console.log(datas);
+  // console.log(datas);
 
   return (
     <>

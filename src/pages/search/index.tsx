@@ -36,7 +36,7 @@ export default function Home() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [data, setData] = useState<photo[]>([]);
-  const [ loading, setLoading ] = useState<boolean>(false);
+  const [ loading, setLoading ] = useState<boolean>(true);
 
   type AppDispatch = typeof store.dispatch;
   const dispatch = useDispatch<AppDispatch>();
@@ -62,6 +62,7 @@ export default function Home() {
     console.log(localStorage.getItem('search'), "aaaa");
     if (localStorage.getItem('search')) {
       dispatch(changeSearch(localStorage.getItem('search')));
+      dispatch(changeWord(localStorage.getItem('search')));
     }
   }, [dispatch]);
 
@@ -73,13 +74,13 @@ export default function Home() {
     }
     if (search) {
       try {
-        setLoading(true);
+        // setLoading(true);
         axios.get(URL, {
           params: {
             search: search
           }
         }).then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           setData(response.data);
           setLoading(false);
         })
