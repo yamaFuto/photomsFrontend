@@ -90,6 +90,8 @@ export default function Home() {
       })
     } catch (e) {
       console.log(e);
+    } finally {
+      setLoading(true);
     }
   }, [router, genre, search, dispatch])
 
