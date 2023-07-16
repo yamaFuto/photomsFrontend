@@ -108,7 +108,7 @@ export default function Home() {
           wallpaper
           <div className="group-hover:bg-teal-300 h-1 rounded-md duration-100"></div>
         </button>
-        <button onClick={() => router.push("/genre/several")} className="group max-[600px]:ml-2 ml-8 text-2xl">
+        <button onClick={() => router.push("/search/genre/several")} className="group max-[600px]:ml-2 ml-8 text-2xl">
           several images
           <div className="group-hover:bg-teal-300 h-1 rounded-md"></div>
         </button>

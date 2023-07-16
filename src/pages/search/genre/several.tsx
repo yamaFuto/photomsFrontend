@@ -8,12 +8,12 @@ import { FixedSizeList } from "react-window";
 import axios from "@/libs/axios";
 import { useDispatch } from "react-redux";
 import store from "@/store/index";
-import { changeGenre, resetGenre } from "../../store/modules/genre";
-import { changeSearch, resetSearch } from "../../store/modules/search";
-import { changeWord, resetWord } from "../../store/modules/word";
+import { changeGenre, resetGenre } from "../../../store/modules/genre";
+import { changeSearch, resetSearch } from "../../../store/modules/search";
+import { changeWord, resetWord } from "../../../store/modules/word";
 import { useSelector } from "react-redux";
 
-const URL_MULTIPLE = "/api/SearchMultipleDetail";
+const URL_MULTIPLE = "/api/SearchMultipleGenreDetail";
 
 type photo = {
   created_at: string,
@@ -54,6 +54,13 @@ export default function Home() {
   }
 
   useEffect(() => {
+    // console.log(localStorage.getItem('genre'), "aaaa");
+    if (localStorage.getItem('genre')) {
+      dispatch(changeGenre(localStorage.getItem('genre')));
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
     console.log(localStorage.getItem('search'), "aaaa");
     if (localStorage.getItem('search')) {
       dispatch(changeSearch(localStorage.getItem('search')));
@@ -62,17 +69,18 @@ export default function Home() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (genre)  {
-      router.push("/search/genre/several")
+    if (!genre)  {
+      router.push("/search/several")
       console.log("genre");
-      localStorage.setItem('genre', genre);
     }
     if (search) {
+      localStorage.setItem('genre', genre);
       try {
         // setLoading(true);
         axios.get(URL_MULTIPLE, {
           params: {
-            search: search
+            search: search,
+            genre: genre
           }
         }).then((response) => {
           console.log(response.data);
@@ -81,6 +89,8 @@ export default function Home() {
         })
       } catch (e) {
         console.log(e);
+      } finally {
+        setLoading(true);
       }
     }
   }, [genre, router, search]);
@@ -90,7 +100,7 @@ export default function Home() {
     <Header action={setIsOpen} />
 
       <div className="container max-[600px]:ml-20 max-[600px]:w-96 ml-40 mt-10 flex pb-0 border-b-2 w-4/12">
-        <button onClick = {() => router.push("/search")} className="group mr-8 text-2xl pl-2">
+        <button onClick = {() => router.push("/search/genre")} className="group mr-8 text-2xl pl-2">
           image
           <div className="group-hover:bg-teal-300 h-1 rounded-md duration-100"></div>
         </button>
