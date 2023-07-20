@@ -12,24 +12,9 @@ import { changeGenre, resetGenre } from "../../store/modules/genre";
 import { changeSearch, resetSearch } from "../../store/modules/search";
 import { changeWord, resetWord } from "../../store/modules/word";
 import { useSelector } from "react-redux";
+import { glob, photo } from "../../types"
 
 const URL_MULTIPLE = "/api/SearchMultipleDetail";
-
-type photo = {
-  created_at: string,
-  updated_at: string,
-  id: number,
-  goods:number,
-  sum: number,
-  url: string,
-  detail_id: number
-}
-
-type glob = {
-  genre: string,
-  search: string,
-  word: string
-}
 
 export default function Home() {
   const router = useRouter();

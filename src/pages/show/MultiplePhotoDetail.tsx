@@ -11,38 +11,9 @@ import { useDispatch } from "react-redux";
 import { changeSearch, resetSearch } from "../../store/modules/search";
 import { changeWord, resetWord } from "../../store/modules/word";
 import store from "@/store/index";
+import { comment, detail, photo } from "../../types"
 
 const URL = "/api/getDetail";
-
-type photo = {
-  created_at: string,
-  updated_at: string,
-  goods: number,
-  id: number,
-  sum: number,
-  url: string,
-  detail_id: number
-}
-
-type detail = {
-  created_at: string
-  explanation: string
-  genre: string
-  id: number
-  name: string
-  photoname: string
-  updated_at: string
-}
-
-type comment = {
-  created_at: string
-  name: string
-  id: number
-  goods: number
-  detail_id: number
-  comment: string
-  updated_at: string
-}
 
 type Props = {
   query: {

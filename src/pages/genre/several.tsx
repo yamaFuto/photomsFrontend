@@ -10,24 +10,9 @@ import { useDispatch } from "react-redux";
 import store from "@/store/index";
 import { changeGenre, resetGenre } from "../../store/modules/genre";
 import { useSelector } from "react-redux";
+import { glob, photo } from "../../types";
 
 const URL_MULTIPLE = "/api/multipleGenreDetail";
-
-type photo = {
-  created_at: string,
-  updated_at: string,
-  id: number,
-  goods:number,
-  sum: number,
-  url: string,
-  detail_id: number
-}
-
-type genre = {
-  genre: string,
-  search: string,
-  word: string
-}
 
 export default function Home() {
   const router = useRouter();
@@ -37,7 +22,7 @@ export default function Home() {
 
   type AppDispatch = typeof store.dispatch;
   const dispatch = useDispatch<AppDispatch>();
-  const genre = useSelector((state: genre) => state.genre);
+  const genre = useSelector((state: glob) => state.genre);
 
   const updatedGenre = (e: ChangeEvent<HTMLSelectElement>) => {
     dispatch(changeGenre(e.target.value));
