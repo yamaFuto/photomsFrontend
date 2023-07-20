@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { changeSearch, resetSearch } from "../../store/modules/search";
 import { changeWord, resetWord } from "../../store/modules/word";
 import store from "@/store/index";
-import { detail, photo, PhotoDetail, comment, glob} from "../../types";
+import {PhotoDetail} from "../../types";
 
 const URL = "/api/getDetail";
 

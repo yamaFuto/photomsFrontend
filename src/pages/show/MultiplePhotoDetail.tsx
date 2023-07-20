@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 import { changeSearch, resetSearch } from "../../store/modules/search";
 import { changeWord, resetWord } from "../../store/modules/word";
 import store from "@/store/index";
-import { comment, detail, photo } from "../../types"
+import { PhotoDetail } from "../../types"
 
 const URL = "/api/getDetail";
 
@@ -23,11 +23,6 @@ type Props = {
 type asyncProps = {
   props: Props
 }
-type PhotoDetail = [
-  detail[],
-  photo[],
-  comment[]
-]
 
 type glob = {
   genre: string,
